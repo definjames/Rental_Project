@@ -2,7 +2,8 @@
 // HTTP helpers
 // -----------------------------------------------------------------------------
 async function apiFetch(path, options = {}) {
-  const base = '/api';
+  // use Render-hosted backend
+  const base = 'https://rental-project-6tni.onrender.com/api';
   if (!options.headers) options.headers = {};
   if (options.body && !(options.body instanceof FormData)) {
     options.headers['Content-Type'] = 'application/json';

@@ -4,6 +4,9 @@ let products = [];
 
 // wrapper for backend fetch calls (similar pattern to auth.js)
 async function apiFetch(path, options = {}){
+  // point to live backend on Render instead of localhost
+  const base = 'https://rental-project-6tni.onrender.com';
+
   if(!options.headers) options.headers = {};
   if(options.body && !(options.body instanceof FormData)){
     options.headers['Content-Type'] = 'application/json';
@@ -12,7 +15,7 @@ async function apiFetch(path, options = {}){
   const token = localStorage.getItem('token');
   if(token) options.headers['Authorization'] = 'Bearer ' + token;
 
-  const res = await fetch('/api' + path, options);
+  const res = await fetch(base + '/api' + path, options);
   const data = await res.json().catch(()=>({}));
   if(!res.ok) throw data;
   return data;
