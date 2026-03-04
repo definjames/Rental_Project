@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register — SpareRental</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .auth-wrap{min-height:100vh; display:flex; justify-content:center; padding:40px 16px; align-items:flex-start; overflow-y:auto;}
+    .auth-card{width:100%;max-width:520px;background:var(--card);padding:26px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .auth-card h2{color:var(--accent);margin-bottom:6px}
+    .auth-card label{display:block;margin-top:12px;color:var(--muted);font-size:0.9rem}
+    .auth-card input,.auth-card select,.auth-card textarea{
+      width:100%;padding:10px;border-radius:8px;
+      border:1px solid rgba(255,255,255,0.03);
+      background:transparent;color:var(--text);margin-top:6px
+    }
+    .auth-actions{display:flex;gap:325px;margin-top:16px}
+    .checkbox-row{display:flex;align-items:center;gap:10px;margin-top:10px;color:var(--muted)}
+    .error{color:red;font-size:14px}
+    body{
+    margin:0;
+    overflow-y:auto;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">SpareRental</div>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Home</a>
+        </nav>
+      </div>
+    </header>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h2>Register to be a Part</h2>
+
+    <form id="registerForm">
+
+      <label>User ID</label>
+      <input type="text" id="userid">
+      <div id="useridError" class="error"></div>
+
+      <label>Password</label>
+      <input type="password" id="pass">
+      <div id="passError" class="error"></div>
+
+      <label>Name</label>
+      <input type="text" id="name">
+      <div id="nameError" class="error"></div>
+
+      <label>Address <span class="error">(Optional)</span></label>
+     
+      <textarea id="address" rows="4" placeholder="Enter your address"></textarea>
+
+
+      <label>Country</label>
+      <select id="country">
+        <option value="">(Please select a Country)</option>
+        <option value="INDIA">India</option>
+        <option value="USA">USA</option>
+        <option value="CANADA">Canada</option>
+        <option value="UK">UK</option>
+        <option value="AUSTRALIA">Australia</option>
+      </select>
+      <div id="countryError" class="error"></div>
+
+      <label>ZIP Code</label>
+      <input type="text" id="zip" maxlength="6"
+       oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <div id="zipError" class="error"></div>
+
+
+      <label>Email</label>
+      <input type="text" id="email">
+      <div id="emailError" class="error"></div>
+
+
+      <label>Sex</label>
+      <div class="checkbox-row">
+        <input type="radio" name="sex" value="male"> Male
+        <input type="radio" name="sex" value="female"> Female
+      </div>
+      <div id="sexError" class="error"></div>
+
+      <label>Rental</label>
+      <div class="checkbox-row">
+        <input type="radio" name="rental" value="Monthly"> Monthly
+        <input type="radio" name="rental" value="Yearly"> Yearly
+      </div>
+      <div id="rentalError" class="error"></div>
+
+      <label>Language Preference</label>
+      <div class="checkbox-row">
+        <input type="checkbox" id="eng"> English
+        <input type="checkbox" id="noneng"> Non-English
+      </div>
+      <div id="langError" class="error"></div>
+
+      <label>About Yourself <span class="error">(Optional)</span></label>
+      <textarea id="about" rows="4"></textarea>
+
+      <div class="auth-actions">
+        <button type="submit" class="btn primary">Submit</button>
+        <a href="login.html" class="btn ghost">Login</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+<script src="validate.js"></script>
+
+</body>
+</html>

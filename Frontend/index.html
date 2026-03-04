@@ -1,0 +1,223 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SpareRental — HomeBuild Components</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- HEADER / NAV -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">SpareRental</div>
+        
+        <nav class="nav">
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#products" class="nav-link">Products</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#contact" class="nav-link">Contact</a>
+
+          <div class="nav-item dropdown">
+            <details class="utils-details">
+              <summary class="nav-link">Utilities ▾</summary>
+              <div class="dropdown-menu" role="menu">
+                <button class="dropdown-item" id="openCalcBtn" type="button">Calculator</button>
+                <!-- more utilities -->
+              </div>
+            </details>
+          </div>
+        </nav>
+        
+        <div class="header-actions">
+          <a id="loginBtn" href="login.html" class="btn small">Login</a>
+          <a id="signupBtn" href="register.html" class="btn small outline">Sign Up</a>
+          <button id="logoutBtn" class="btn small hidden">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN: HOME (full window) -->
+    <section id="home" class="hero">
+      <div class="hero-inner container">
+        <h1 class="hero-title">Rent Tools. Build Homes. <span class="accent">Smarter.</span></h1>
+        <p class="hero-sub">
+          SpareRental — digital rental management for construction tools & spare components.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn primary" href="#products">Browse Products</a>
+          <a class="btn ghost" href="#about">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section id="products" class="section">
+      <div class="container section-inner">
+        <div class="section-head">
+          <h2>Available Components</h2>
+          <div class="search-wrap">
+            <input id="search" class="search" placeholder="Search products or category..." />
+          </div>
+        </div>
+
+        <div id="productGrid" class="product-grid"></div>
+      </div>
+    </section>
+
+    <!-- Admin section -->
+    <section id="admin" class="section hidden">
+      <div class="container">
+        <div id="adminPanel" class="admin-panel">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h3>Admin Panel — Manage Products & Users</h3>
+            <div>
+              <button id="adminCloseBtn" class="btn ghost">Close Admin</button>
+            </div>
+          </div>
+
+          <div class="admin-tabs" role="tablist">
+            <button class="admin-tab active" data-tab="products">Products</button>
+            <button class="admin-tab" data-tab="users">Users</button>
+          </div>
+
+          <div id="adminStatus" class="admin-status"></div>
+
+          <div id="adminTabProducts" class="admin-tabpanel">
+            <h4>Add / Update Product</h4>
+            <form id="adminForm" class="admin-form">
+              <input id="pId" type="hidden" />
+              <input id="pName" placeholder="Product name" required />
+              <input id="pCategory" placeholder="Category" required />
+              <input id="pPrice" type="number" placeholder="Price per day (₹)" min="0" required />
+              <input id="pQty" type="number" placeholder="Total Quantity" min="0" required />
+              <input id="pImg" placeholder="Image URL (optional)" />
+              <input id="pImgFile" type="file" accept="image/*" />
+              <img id="pImgPreview" src="" alt="Preview" style="max-width:120px;max-height:80px;display:none;margin-top:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.05)" />
+              <div class="admin-actions">
+                <button type="submit" class="btn primary">Save Product</button>
+                <button id="adminReset" type="button" class="btn ghost">Reset</button>
+              </div>
+            </form>
+
+            <h4 style="margin-top:18px">Product Stock</h4>
+            <div id="adminProductList" class="admin-list"></div>
+          </div>
+
+          <div id="adminTabUsers" class="admin-tabpanel hidden">
+            <h4>User Management</h4>
+
+            <!-- Add User Form -->
+            <form id="adminAddUserForm" class="admin-form" style="margin-bottom:12px">
+              <input id="uName" placeholder="Username" required />
+              <input id="uEmail" placeholder="Email" type="email" required />
+              <input id="uPass" placeholder="Password" type="password" required />
+              <select id="uRole">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              <div class="admin-actions">
+                <button type="submit" class="btn primary">Add User</button>
+                <button id="adminAddUserReset" type="button" class="btn ghost">Reset</button>
+              </div>
+            </form>
+
+            <div id="userList" class="admin-list"></div>
+          </div>
+
+          <div class="admin-note">
+            <small>Tip: Click "Edit" to load a product for editing. Use "Remove" to delete products or users.</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section about">
+      <div class="container">
+        <h2>About SpareRental</h2>
+        <p>
+          SpareRental is a lightweight, focused frontend demo for managing rental inventory and components used in home
+          building. It demonstrates product listing, admin-managed inventory, and local account management (localStorage).
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section contact">
+      <div class="container">
+        <h2>Contact</h2>
+        <p>Email: support@sparerental.local</p>
+        <p>Phone: +91 87144 25987</p>
+        <p>Location: Kerala, India</p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container">© 2025 SpareRental</div>
+    </footer>
+
+   
+
+    <!-- Calculator -->
+    <div id="calcModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="calcTitle">
+      <div class="modal">
+        <button id="closeCalcBtn" class="modal-close" aria-label="Close calculator">×</button>
+        <h3 id="calcTitle" class="modal-title">Calculator</h3>
+
+        <div class="calc card" role="application" aria-label="Calculator">
+          <div class="calc-display" id="calcDisplay" tabindex="0" aria-live="polite">0</div>
+
+          <div class="calc-keys" role="group" aria-label="Calculator buttons">
+
+            <button class="btn btn-calc fn" data-action="clear">C</button>
+            <button class="btn btn-calc fn" data-action="back">⌫</button>
+            <button class="btn btn-calc fn" data-action="percent">%</button>
+            <button class="btn btn-calc op" data-value="/">÷</button>
+
+            <button class="btn btn-calc" data-value="7">7</button>
+            <button class="btn btn-calc" data-value="8">8</button>
+            <button class="btn btn-calc" data-value="9">9</button>
+            <button class="btn btn-calc op" data-value="*">×</button>
+
+            <button class="btn btn-calc" data-value="4">4</button>
+            <button class="btn btn-calc" data-value="5">5</button>
+            <button class="btn btn-calc" data-value="6">6</button>
+            <button class="btn btn-calc op" data-value="-">−</button>
+
+            <button class="btn btn-calc" data-value="1">1</button>
+            <button class="btn btn-calc" data-value="2">2</button>
+            <button class="btn btn-calc" data-value="3">3</button>
+            <button class="btn btn-calc op" data-value="+">+</button>
+
+            <button class="btn btn-calc wide" data-value="0">0</button>
+            <button class="btn btn-calc" data-value=".">.</button>
+            <button class="btn btn-calc op primary" data-action="equals">=</button>
+          </div>
+      </div>
+    </div>
+
+    <!-- First login password change -->
+    <div id="firstLoginModal" class="modal-overlay hidden" role="dialog" aria-hidden="true">
+      <div class="modal">
+        <button id="firstLoginClose" class="modal-close" aria-label="Close">×</button>
+        <h3 class="modal-title">Change password</h3>
+        <p>Please change the temporary password set by the admin.</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <input id="firstNewPass" type="password" placeholder="New password (7-12 chars)" />
+          <input id="firstNewPassConfirm" type="password" placeholder="Confirm new password" />
+          <div style="display:flex;gap:8px">
+            <button id="firstPassSave" class="btn primary">Save</button>
+            <button id="firstPassCancel" class="btn ghost">Cancel</button>
+          </div>
+          <div id="firstPassError" class="error"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script src="calc.js"></script>
+  </body>
+</html>

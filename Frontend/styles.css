@@ -1,0 +1,236 @@
+﻿/* ========== styles.css ========== */
+/* Fonts */
+:root{
+  --bg: #0c0c0c;
+  --surface: #121212;
+  --muted: #9b9b9b;
+  --text: #eaeaea;
+  --accent: #ff3b3b;  
+  --card: #151515;
+  --glass: rgba(255,255,255,0.03);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  height:100%
+}
+
+body{
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:linear-gradient(180deg,var(--bg),#070707);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+}
+
+/* container */
+.container{width:92%;max-width:1200px;margin:0 auto}
+
+/* header */
+.site-header{position:sticky;top:0;background:var(--surface);border-bottom:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(4px);z-index:60}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{font-size:1.35rem;font-weight:700;color:var(--accent);letter-spacing:0.4px}
+.nav{display:flex;gap:18px}
+.nav a{text-decoration:none;color:var(--muted);transition:all .18s ease}
+.nav a:hover{color:var(--text);transform:translateY(-2px);text-shadow:0 2px 12px rgba(255,59,59,0.06)}
+.nav a.active{color:var(--text);font-weight:700;transform:none} 
+.header-actions{display:flex;gap:10px;align-items:center}
+.nav{display:flex;gap:18px;align-items:center;flex-wrap:nowrap}
+
+/* buttons */
+.btn{display:inline-block;padding:9px 14px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--text);cursor:pointer;font-weight:600}
+.btn:hover{filter:brightness(1.05)}
+a.btn, a.btn:link, a.btn:visited, a.btn:hover, a.btn:focus, a.btn:active { text-decoration: none; }
+
+/* nav button design  */
+.nav a, .nav a:link, .nav a:visited, .nav a:hover, .nav a:focus, .nav a:active { text-decoration: none; }.small{font-size:0.85rem;padding:7px 12px}
+.primary{background:linear-gradient(90deg,var(--accent),#ff6b6b);color:#fff;border:none;box-shadow:0 6px 20px rgba(255,59,59,0.08)}
+.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+.outline{border:1px solid var(--accent);color:var(--accent);background:transparent}
+
+/* HERO (full window) */
+.hero{min-height:88vh;display:flex;align-items:center}
+.hero-inner{padding:60px 0;text-align:center}
+.hero-title{font-size:2.6rem;line-height:1.02;margin-bottom:8px}
+.hero-title .accent{color:var(--accent);text-shadow:0 6px 40px rgba(255,59,59,0.06)}
+.hero-sub{color:var(--muted);margin-bottom:18px}
+.hero-ctas{display:flex;gap:12px;justify-content:center}
+
+/* sections */
+.section{padding:48px 0;border-top:1px solid rgba(255,255,255,0.02)}
+.section h2{font-size:1.6rem;margin-bottom:14px}
+.section .section-inner{padding-top:6px}
+
+/* product grid */
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.search{width:320px;max-width:40vw;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--card);color:var(--text)}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+
+/* Product card: image on top, details below */
+.product-card{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:center;
+  text-align:center;
+  background:linear-gradient(180deg,var(--card),#111);
+  padding:14px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.02);
+  transition:transform .28s cubic-bezier(.2,.9,.3,1),box-shadow .28s;
+}
+.product-card:hover{transform:translateY(-8px);box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+.product-thumb{
+  width:100%;
+  height:140px;
+  border-radius:8px;
+  overflow:hidden;
+  display:block;
+  background:rgba(255,255,255,0.01);
+  border:1px solid rgba(255,255,255,0.02);
+}
+.product-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.product-info{min-width:0}
+.product-title{font-weight:700;font-size:1.05rem;margin:8px 0 6px}
+.product-meta{font-size:0.9rem;color:var(--muted);margin-bottom:6px}
+.product-price{color:var(--accent);font-weight:700;margin-bottom:6px}
+
+@media (max-width:880px){
+  .product-card{padding:12px}
+  .product-thumb{height:160px}
+}
+
+/* admin panel */
+.admin-panel{margin-top:30px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.04));border:1px solid rgba(255,255,255,0.02);position:relative}
+.admin-form{display:flex;flex-wrap:wrap;gap:10px}
+.admin-form input{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);min-width:200px}
+.admin-actions{display:flex;gap:10px;margin-left:auto;margin-top:6px}
+.admin-note{margin-top:10px;color:var(--muted)}
+
+/* Admin internal scrolling and tabs */
+.admin-panel{max-height:calc(100vh - 160px);overflow:auto}
+.admin-panel.is-open{position:fixed;left:50%;transform:translateX(-50%);top:70px;max-width:1000px;width:calc(100% - 40px);z-index:140;box-shadow:0 20px 60px rgba(0,0,0,0.6)}
+.admin-tabs{display:flex;gap:8px;margin-bottom:12px}
+.admin-tab{padding:8px 12px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03);cursor:pointer;color:var(--muted)}
+.admin-tab.active{background:linear-gradient(90deg,var(--accent),#ff6b6b);color:#fff;border:none}
+.admin-row{padding:10px 12px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.02);margin-bottom:10px}
+.admin-status{color:var(--muted);margin-top:10px}
+
+/* Disable body scroll when admin is open */
+.no-scroll{overflow:hidden;height:100vh}
+
+
+      /* style for login */
+      .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px}
+      .auth-card{width:100%;max-width:420px;background:var(--card);padding:26px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+      .auth-card h2{color:var(--accent);margin-bottom:6px}
+      .auth-card label{display:block;margin-top:12px;color:var(--muted);font-size:0.9rem}
+      .auth-card input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);margin-top:6px}
+      .auth-actions{display:flex;gap:12px;margin-top:16px;align-items:center}
+
+      /* forgot password */
+      .auth-help{ text-align:right; margin-top:8px }
+      .auth-help a{ color:var(--accent); text-decoration:none; font-size:0.95rem }
+      .auth-help a:hover{ text-decoration:underline }
+
+      .forgot-box{margin-top:12px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+      .hidden{display:none}
+      .status{color:var(--muted);margin-top:8px;font-size:0.95rem}
+
+/* other */
+.about p, .contact p{color:var(--muted);max-width:900px}
+.site-footer{margin-top:auto;padding:22px 0;text-align:center;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02);} 
+
+/*  product  scrollable when active; otherwise locked */
+#products .section-inner{max-height:calc(100vh - 160px);overflow:hidden}
+#products.scrollable .section-inner{overflow:auto;-webkit-overflow-scrolling:touch}
+.product-grid{overflow:auto}
+
+/* helper to hide non-active sections */
+section.hidden{display:none}
+
+
+/* visibility helpers */
+.hidden{display:none}
+
+/* small screens */
+@media (max-width:880px){
+  .nav{display:none}
+  .product-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+  .hero-title{font-size:2rem}
+  .search{width:100%}
+}
+
+/* subtle entrance animations */
+@keyframes floatIn {
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+.product-card{animation:floatIn .6s ease both}
+
+/* Utilities */
+
+/* Keep header layout stable */
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:16px}
+
+/* Allow button toggles and anchors to share styling */
+.nav-link, .dropdown-toggle { color:var(--muted); text-decoration:none; background:none; border:none; padding:6px 8px; cursor:pointer; font:inherit; display:inline-flex; align-items:center }
+.nav-link:hover, .dropdown-toggle:hover { color:var(--text); transform:none }
+
+/* Dropdown */
+.nav-item.dropdown{ position:relative; display:inline-flex; align-items:center }
+.dropdown-menu{ position:absolute; top:calc(100% + 6px); left:0; min-width:160px; background:var(--surface); border:1px solid rgba(255,255,255,0.03); box-shadow:0 12px 30px rgba(0,0,0,0.6); padding:6px 0; border-radius:8px; display:none; z-index:80 }
+.dropdown-menu.show{ display:block }
+.dropdown-item{ display:block; padding:10px 14px; border-radius:6px; color:var(--accent); text-decoration:none; white-space:nowrap;background:transparent}
+.dropdown-item:hover{ background:rgba(255,255,255,0.02); color:var(--text) }
+
+/* Ensure header action buttons stay right-aligned and vertically centered */
+.header-actions{display:flex;gap:10px;align-items:center}
+.utils-details{position:relative}
+.utils-details summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;outline:none}
+.utils-details summary::-webkit-details-marker{display:none}
+.utils-details .dropdown-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;min-width:90px;z-index:80}
+.utils-details[open] .dropdown-menu{display:block}
+
+/* Calculator modal & calculator styles */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal-overlay.hidden{display:none}
+.modal{position:relative;max-width:420px;width:100%}
+.modal-close{position:absolute;right:12px;top:12px;background:transparent;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer}
+.modal-title{text-align:center;color:var(--muted);margin-bottom:8px}
+
+/* Modal visual enhancements (background, box, buttons) */
+.modal-overlay{background:linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65));backdrop-filter:blur(6px)}
+.modal{position:relative;max-width:480px;width:100%;background:linear-gradient(180deg,var(--card),#0f0f0f);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 20px 60px rgba(0,0,0,0.6);color:var(--text);}
+.modal .modal-body{margin-top:6px;color:var(--text)}
+.modal .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.modal-close{position:absolute;right:12px;top:12px;background:transparent;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;width:36px;height:36px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center}
+.modal .btn{padding:9px 14px;border-radius:8px}
+.modal .btn.ghost{border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)}
+.modal .btn.primary{background:linear-gradient(90deg,var(--accent),#ff6b6b);color:#fff;border:none}
+.modal .error{color:#ff8b8b;margin-top:6px}
+
+/* Calculator card */
+.calc { max-width:420px;margin:0 auto;padding:18px;border-radius:12px;background:var(--card);border:1px solid rgba(255,255,255,0.02);box-shadow:0 8px 30px rgba(0,0,0,0.45); }
+.calc-display { height:64px;padding:12px;font-size:1.4rem;background:transparent;color:var(--text);border-radius:8px;border:1px solid rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:flex-end;padding-right:16px;margin-bottom:12px;word-break:break-all;outline:none }
+.calc-keys { display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; }
+.btn-calc { padding:14px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);color:var(--text); font-weight:700; cursor:pointer; font-size:1rem; }
+.btn-calc:hover { filter:brightness(1.05); transform:none; }
+.btn-calc.op { background:transparent;color:var(--accent); }
+.btn-calc.fn { color:var(--muted); background:transparent; }
+.btn-calc.wide { grid-column: span 2; text-align:left;padding-left:18px; }
+.btn-calc.primary { background:linear-gradient(90deg,var(--accent),#ff6b6b); color:#fff; border:none; }
+
+/* small modal entrance animation */
+.modal-overlay { animation: fadeIn .12s ease both }
+@keyframes fadeIn { from { opacity:0; transform: translateY(8px)} to {opacity:1; transform:none} }
+
+/* register contry dropdown */
+#country {
+  background-color: #00000000;  
+  color: #f8401bbe;             
+}

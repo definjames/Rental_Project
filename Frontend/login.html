@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login — SpareRental</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">SpareRental</div>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Home</a>
+        </nav>
+      </div>
+    </header>
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <h2>Login</h2>
+        <p style="color:var(--muted)">Enter your registered account</p>
+
+        <form id="loginForm">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" placeholder="you@example.com" required />
+
+          <label for="loginPassword">Password</label>
+          <input id="loginPassword" type="password" placeholder="password" minlength="4" required />
+
+          <!-- Forgot password-->
+          <div class="auth-help">
+            <a href="#" id="forgotLink">Forgot password?</a>
+          </div>
+
+          <div id="loginStatus" class="status" aria-live="polite"></div>
+
+          <div class="auth-actions">
+            <button type="submit" class="btn primary">Login</button>
+            <a href="register.html" class="btn ghost">Sign Up</a>
+          </div>
+        </form>
+
+        <!-- Inline forgot password box -->
+        <div id="forgotBox" class="forgot-box hidden" aria-hidden="true">
+          <div id="forgotForm">
+            <label for="forgotEmail">Enter your account email</label>
+            <input id="forgotEmail" type="email" placeholder="you@example.com" />
+            <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+              <button type="button" id="forgotSend" class="btn primary">Send reset link</button>
+              <button type="button" id="backToLogin" class="btn ghost">Back</button>
+            </div>
+            <div id="forgotStatus" class="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="auth.js"></script>
+  </body>
+</html>
