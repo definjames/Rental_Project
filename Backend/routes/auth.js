@@ -3,6 +3,15 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+function setAuthCookie(res, token) {
+  const eightHoursMs = 8 * 60 * 60 * 1000;
+  res.cookie('token', token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    maxAge: eightHoursMs
+  });
+}
+
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
@@ -16,7 +25,7 @@ router.post('/register', async (req, res) => {
 
     const userData = { ...req.body, firstLogin: true };
     const user = new User(userData);
-    // default role is user unless explicitly set to admin
+    // default role is user
     await user.save();
     return res.json({ user: user.toJSON() });
   } catch (err) {
@@ -39,11 +48,24 @@ router.post('/login', async (req, res) => {
 
     const payload = { id: user._id, role: user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '8h' });
+
+    setAuthCookie(res, token);
     res.json({ token, user: user.toJSON() });
   } catch (err) {
     console.error('login error', err);
     res.status(500).json({ error: 'server error' });
   }
+});
+
+// GET /api/auth/me  (requires valid token)
+router.get('/me', require('../middleware/auth'), async (req, res) => {
+  res.json({ user: req.user });
+});
+
+// POST /api/auth/logout
+router.post('/logout', async (req, res) => {
+  res.clearCookie('token', { sameSite: 'lax' });
+  res.json({ message: 'logged out' });
 });
 
 // POST /api/auth/change-password (requires valid token)

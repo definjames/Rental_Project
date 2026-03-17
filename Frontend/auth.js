@@ -2,17 +2,14 @@
 // HTTP helpers
 // -----------------------------------------------------------------------------
 async function apiFetch(path, options = {}) {
-  // use Render-hosted backend
-  const base = 'https://rental-project-6tni.onrender.com/api';
+  const base = '/api';
   if (!options.headers) options.headers = {};
   if (options.body && !(options.body instanceof FormData)) {
     options.headers['Content-Type'] = 'application/json';
     options.body = JSON.stringify(options.body);
   }
-  const token = localStorage.getItem('token');
-  if (token) options.headers['Authorization'] = 'Bearer ' + token;
 
-  const res = await fetch(base + path, options);
+  const res = await fetch(base + path, { ...options, credentials: 'same-origin' });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw data;
   return data;
@@ -25,11 +22,25 @@ async function registerApi(userObj) {
   return apiFetch('/auth/register', { method: 'POST', body: userObj });
 }
 
+async function meApi() {
+  const data = await apiFetch('/auth/me');
+  return data.user || null;
+}
+
+async function logoutApi() {
+  return apiFetch('/auth/logout', { method: 'POST' });
+}
+
 // -----------------------------------------------------------------------------
 // UI helpers
 // -----------------------------------------------------------------------------
-function updateHeaderUI() {
-  const current = JSON.parse(localStorage.getItem('currentUser') || 'null');
+async function updateHeaderUI() {
+  let current = null;
+  try {
+    current = await meApi();
+  } catch (e) {
+    current = null;
+  }
   const loginBtn = document.getElementById('loginBtn');
   const signupBtn = document.getElementById('signupBtn');
   const logoutBtn = document.getElementById('logoutBtn');
@@ -41,7 +52,7 @@ function updateHeaderUI() {
     loginBtn.classList.add('hidden');
     signupBtn.classList.add('hidden');
     logoutBtn.classList.remove('hidden');
-    logoutBtn.textContent = 'Logout (' + (current.name || current.email) + ')';
+    logoutBtn.textContent = current.name ? ('Logout (' + current.name + ')') : 'Logout';
     if (adminNav) {
       if (current.role === 'admin') adminNav.classList.remove('hidden');
       else adminNav.classList.add('hidden');
@@ -73,10 +84,10 @@ function injectAdminNav() {
 // -----------------------------------------------------------------------------
 // Initialization and event wiring
 // -----------------------------------------------------------------------------
-function initAuth() {
-  updateHeaderUI();
+async function initAuth() {
+  await updateHeaderUI();
   try {
-    const cur = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    const cur = await meApi();
     if (cur && cur.role === 'admin') injectAdminNav();
   } catch (e) {}
 
@@ -89,10 +100,8 @@ function initAuth() {
       const pass = document.querySelector('#loginPassword').value;
       try {
         const resp = await loginApi(email, pass);
-        const curUser = resp.user;
-        localStorage.setItem('currentUser', JSON.stringify(curUser));
-        localStorage.setItem('token', resp.token);
-        if (curUser.role === 'admin') injectAdminNav();
+        const curUser = resp.user || null;
+        if (curUser && curUser.role === 'admin') injectAdminNav();
         if (loginStatus) loginStatus.textContent = 'Login success';
         alert('Login success');
         location.href = 'index.html';
@@ -105,11 +114,10 @@ function initAuth() {
     });
   }
 
-  document.querySelector('#logoutBtn')?.addEventListener('click', () => {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('token');
+  document.querySelector('#logoutBtn')?.addEventListener('click', async () => {
+    try { await logoutApi(); } catch (e) {}
     const adm = document.getElementById('adminNav'); if (adm) adm.remove();
-    alert('Logged out'); updateHeaderUI(); location.reload();
+    alert('Logged out'); await updateHeaderUI(); location.reload();
   });
 
   // forgot-password logic unchanged
@@ -178,24 +186,26 @@ function initAuth() {
       if(newPassConfirm) newPassConfirm.value='';
     }
 
-    try{
-      const cur = JSON.parse(localStorage.getItem('currentUser') || 'null');
-      if(cur && cur.firstLogin){
-        if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showModal);
-        else showModal();
-      }
-    }catch(e){}
+    (async function(){
+      try{
+        const cur = await meApi();
+        if(cur && cur.firstLogin){
+          if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showModal);
+          else showModal();
+        }
+      }catch(e){}
+    })();
 
-    closeBtn?.addEventListener('click', function(){
-      localStorage.removeItem('currentUser');
+    closeBtn?.addEventListener('click', async function(){
+      try { await logoutApi(); } catch (e) {}
       hideModal();
-      updateHeaderUI();
+      await updateHeaderUI();
       location.href = 'login.html';
     });
-    cancelBtn?.addEventListener('click', function(){
-      localStorage.removeItem('currentUser');
+    cancelBtn?.addEventListener('click', async function(){
+      try { await logoutApi(); } catch (e) {}
       hideModal();
-      updateHeaderUI();
+      await updateHeaderUI();
       location.href='login.html';
     });
 
@@ -206,9 +216,6 @@ function initAuth() {
       if(p !== q){ if(errEl) errEl.textContent='Passwords do not match'; return; }
       try{
         await apiFetch('/auth/change-password', { method: 'POST', body: { newPassword: p } });
-        // update stored currentUser flag
-        const cur = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        if(cur){ cur.firstLogin = false; localStorage.setItem('currentUser', JSON.stringify(cur)); }
         if(window.setAdminStatus) setAdminStatus('Password updated');
         hideModal();
         alert('Password updated. Welcome!');

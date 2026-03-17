@@ -57,7 +57,7 @@
         <div class="section-head">
           <h2>Available Components</h2>
           <div class="search-wrap">
-            <input id="search" class="search" placeholder="Search products or category..." />
+            <input id="search" class="search" type="search" name="product_search" placeholder="Search products or category..." autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="search" data-lpignore="true" data-1p-ignore />
           </div>
         </div>
 
@@ -65,72 +65,7 @@
       </div>
     </section>
 
-    <!-- Admin section -->
-    <section id="admin" class="section hidden">
-      <div class="container">
-        <div id="adminPanel" class="admin-panel">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <h3>Admin Panel — Manage Products & Users</h3>
-            <div>
-              <button id="adminCloseBtn" class="btn ghost">Close Admin</button>
-            </div>
-          </div>
-
-          <div class="admin-tabs" role="tablist">
-            <button class="admin-tab active" data-tab="products">Products</button>
-            <button class="admin-tab" data-tab="users">Users</button>
-          </div>
-
-          <div id="adminStatus" class="admin-status"></div>
-
-          <div id="adminTabProducts" class="admin-tabpanel">
-            <h4>Add / Update Product</h4>
-            <form id="adminForm" class="admin-form">
-              <input id="pId" type="hidden" />
-              <input id="pName" placeholder="Product name" required />
-              <input id="pCategory" placeholder="Category" required />
-              <input id="pPrice" type="number" placeholder="Price per day (₹)" min="0" required />
-              <input id="pQty" type="number" placeholder="Total Quantity" min="0" required />
-              <input id="pImg" placeholder="Image URL (optional)" />
-              <input id="pImgFile" type="file" accept="image/*" />
-              <img id="pImgPreview" src="" alt="Preview" style="max-width:120px;max-height:80px;display:none;margin-top:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.05)" />
-              <div class="admin-actions">
-                <button type="submit" class="btn primary">Save Product</button>
-                <button id="adminReset" type="button" class="btn ghost">Reset</button>
-              </div>
-            </form>
-
-            <h4 style="margin-top:18px">Product Stock</h4>
-            <div id="adminProductList" class="admin-list"></div>
-          </div>
-
-          <div id="adminTabUsers" class="admin-tabpanel hidden">
-            <h4>User Management</h4>
-
-            <!-- Add User Form -->
-            <form id="adminAddUserForm" class="admin-form" style="margin-bottom:12px">
-              <input id="uName" placeholder="Username" required />
-              <input id="uEmail" placeholder="Email" type="email" required />
-              <input id="uPass" placeholder="Password" type="password" required />
-              <select id="uRole">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-              <div class="admin-actions">
-                <button type="submit" class="btn primary">Add User</button>
-                <button id="adminAddUserReset" type="button" class="btn ghost">Reset</button>
-              </div>
-            </form>
-
-            <div id="userList" class="admin-list"></div>
-          </div>
-
-          <div class="admin-note">
-            <small>Tip: Click "Edit" to load a product for editing. Use "Remove" to delete products or users.</small>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Admin UI is in admin.html -->
 
     <!-- ABOUT -->
     <section id="about" class="section about">
@@ -138,7 +73,7 @@
         <h2>About SpareRental</h2>
         <p>
           SpareRental is a lightweight, focused frontend demo for managing rental inventory and components used in home
-          building. It demonstrates product listing, admin-managed inventory, and local account management (localStorage).
+          building. It demonstrates product listing, admin-managed inventory, and cookie-based login.
         </p>
       </div>
     </section>

@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Rental Management</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg), #070707);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: var(--surface);
+      color: var(--text);
+      padding: 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
+      color: var(--accent);
+      padding: 20px;
+      margin: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar ul li a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 10px 20px;
+      display: block;
+      border-radius: 0;
+      transition: all 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+      background: var(--glass);
+      color: var(--text);
+      transform: translateX(5px);
+    }
+
+    .sidebar ul li a.active {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: bold;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      flex: 1;
+      padding: 20px;
+    }
+
+    .header {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .header h1 {
+      font-size: 24px;
+      color: var(--text);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info button {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .user-info button:hover {
+      filter: brightness(0.9);
+    }
+
+    .content-area {
+      display: none;
+    }
+
+    .content-area.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .card-header h2 {
+      margin: 0;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 5px;
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-size: 14px;
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .btn:hover {
+      filter: brightness(0.9);
+    }
+
+    .btn-sm {
+      font-size: 0.8rem;
+      padding: 4px 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table thead {
+      background: var(--surface);
+    }
+
+    table th,
+    table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    table th {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    table td {
+      color: var(--muted);
+    }
+
+    table tr:hover {
+      background: var(--glass);
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert-success {
+      background: rgba(39, 174, 96, 0.1);
+      color: #27ae60;
+      border: 1px solid rgba(39, 174, 96, 0.2);
+    }
+
+    .alert-error {
+      background: rgba(231, 76, 60, 0.1);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal.show {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: var(--card);
+      color: var(--text);
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .modal-button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .stat-card h3 {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .actions button {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    .image-upload-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .image-upload-container input[type="file"] {
+      display: none;
+    }
+
+    .image-preview {
+      width: 100%;
+      height: 150px;
+      border: 2px dashed rgba(255,255,255,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: var(--surface);
+    }
+
+    .image-preview:hover {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .preview-placeholder {
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .image-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .btn-secondary {
+      background: var(--muted) !important;
+      color: var(--text) !important;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.2) !important;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 10px;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .header {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h2>Admin Panel</h2>
+      <ul>
+        <li><a href="#" data-section="dashboard" onclick="showSection('dashboard'); return false;" class="nav-link active">Dashboard</a></li>
+        <li><a href="#" data-section="users" onclick="showSection('users'); return false;" class="nav-link">Users</a></li>
+        <li><a href="#" data-section="products" onclick="showSection('products'); return false;" class="nav-link">Products</a></li>
+        <li><a href="#" data-section="rentals" onclick="showSection('rentals'); return false;" class="nav-link">Rentals</a></li>
+        <li><a href="#" data-section="returns" onclick="showSection('returns'); return false;" class="nav-link">Returns</a></li>
+        <li><a href="#" data-section="bills" onclick="showSection('bills'); return false;" class="nav-link">Bills</a></li>
+        <li><a href="#" onclick="logout()" class="nav-link">Logout</a></li>
+      </ul>
+    </div>
+
+    <div class="main-content">
+      <div class="header">
+        <h1 id="pageTitle">Dashboard</h1>
+        <div class="user-info">
+          <span id="userName">Admin</span>
+        </div>
+      </div>
+
+      <div id="alert" class="alert"></div>
+
+      <!-- Dashboard Section -->
+      <div id="dashboard" class="content-area active">
+        <div class="card">
+          <h2>Dashboard Overview</h2>
+          <div class="grid">
+            <div class="stat-card">
+              <h3>Total Users</h3>
+              <div class="value" id="totalUsers">0</div>
+            </div>
+            <div class="stat-card">
+              <h3>Total Products</h3>
+              <div class="value" id="totalProducts">0</div>
+            </div>
+            <div class="stat-card">
+              <h3>Active Rentals</h3>
+              <div class="value" id="activeRentals">0</div>
+            </div>
+            <div class="stat-card">
+              <h3>Total Revenue</h3>
+              <div class="value" id="totalRevenue">&#8377;0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Section -->
+      <div id="users" class="content-area">
+        <div class="card">
+          <div class="card-header">
+            <h2>Manage Users</h2>
+            <button class="btn" onclick="showAddUserModal()">Add New User</button>
+          </div>
+          <div class="table-container">
+            <table id="usersTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="5" style="text-align: center; color: var(--muted);">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Section -->
+      <div id="products" class="content-area">
+        <div class="card">
+          <div class="card-header">
+            <h2>Manage Products</h2>
+            <button class="btn" onclick="showAddProductModal()">Add New Product</button>
+          </div>
+          <div class="table-container">
+            <table id="productsTable">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="6" style="text-align: center; color: var(--muted);">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rentals Section -->
+      <div id="rentals" class="content-area">
+        <div class="card">
+          <div class="card-header">
+            <div style="display: flex; gap: 15px; align-items: center; width: 100%;">
+              <h2 style="margin: 0;">Rented Products</h2>
+              <select id="userFilterSelect" onchange="filterRentalsByUser(this.value)" style="flex: 1; max-width: 300px; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; background: var(--surface); color: var(--text); font-family: inherit;">
+                <option value="">-- All Users --</option>
+              </select>
+            </div>
+            <!-- Legacy modal-based add rental removed (batch creator below) -->
+          </div>
+          <div class="table-container">
+            <table id="rentalsTable">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Rented Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4" style="text-align: center; color: var(--muted);">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Batch Rental Creation (one user, many products) -->
+        <div class="card" style="margin-top: 20px;">
+          <div class="card-header">
+            <h2>Create Many Rentals (One User)</h2>
+          </div>
+          <div style="padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+              <div style="margin-bottom: 12px;">
+                <label for="rentalUserSelect">User:</label>
+                <select id="rentalUserSelect" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; background: var(--surface); color: var(--text);">
+                  <option value="">-- Select User --</option>
+                </select>
+                <div id="rentalUserHint" style="margin-top: 6px; font-size: 12px; color: var(--muted);"></div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 120px auto; gap: 10px; align-items: end;">
+                <div>
+                  <label for="rentalProductSelect">Product:</label>
+                  <select id="rentalProductSelect" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; background: var(--surface); color: var(--text);">
+                    <option value="">-- Select Product --</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="rentalQtyInput">Qty:</label>
+                  <input type="number" id="rentalQtyInput" min="1" value="1" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; background: var(--surface); color: var(--text);">
+                </div>
+                <button class="btn" onclick="addRentalToList()" style="height: 42px;">Add More</button>
+              </div>
+            </div>
+
+            <div style="border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 12px; background: var(--surface);">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+                <h4 style="margin: 0;">Products Selected</h4>
+                <button class="btn btn-secondary btn-sm" onclick="clearRentalsList()">Clear</button>
+              </div>
+              <div id="rentalsList" style="font-size: 12px; margin-top: 10px;">
+                <p style="color: var(--muted);">No rentals added yet</p>
+              </div>
+              <button class="btn" onclick="createRentals()" style="margin-top: 12px; width: 100%;">Create Rentals</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Returns Section -->
+      <div id="returns" class="content-area">
+        <div class="card">
+          <div class="card-header">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;">
+              <h2 style="margin:0;">Process Returns</h2>
+              <select id="returnsUserFilterSelect" onchange="setReturnsUserFilter(this.value)" style="max-width: 320px; width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; background: var(--surface); color: var(--text); font-family: inherit;">
+                <option value="">-- All Users --</option>
+              </select>
+            </div>
+          </div>
+          <div style="padding: 15px;" id="returnsContainer">
+            <p style="text-align: center; color: var(--muted);">Loading...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bills Section -->
+      <div id="bills" class="content-area">
+        <div class="card">
+          <div class="card-header">
+            <h2>Billing History</h2>
+          </div>
+          <div style="padding: 15px;" id="billsContainer">
+            <p style="text-align: center; color: var(--muted);">Loading...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div id="addUserModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Add New User</div>
+      <form id="addUserForm" onsubmit="addUser(event)">
+        <div class="form-group">
+          <label for="userId">User ID</label>
+          <input type="text" id="userId" required>
+        </div>
+        <div class="form-group">
+          <label for="newUserName">Full Name</label>
+          <input type="text" id="newUserName" required>
+        </div>
+        <div class="form-group">
+          <label for="userEmail">Email Address</label>
+          <input type="email" id="userEmail" required>
+        </div>
+        <div class="form-group">
+          <label for="userPassword">Password</label>
+          <input type="password" id="userPassword" required minlength="7">
+        </div>
+        <div class="form-group">
+          <label for="userRole">Role</label>
+          <select id="userRole" required>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="modal-button-group">
+          <button type="button" class="btn btn-secondary" onclick="closeAddUserModal()">Cancel</button>
+          <button type="submit" class="btn">Add User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="addProductModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Add New Product</div>
+      <form id="addProductForm" onsubmit="addProduct(event)">
+        <div class="form-group">
+          <label for="productName">Product Name</label>
+          <input type="text" id="productName" required>
+        </div>
+        <div class="form-group">
+          <label for="productCategory">Category</label>
+          <input type="text" id="productCategory" required>
+        </div>
+        <div class="form-group">
+          <label for="productPrice">Price per Day (&#8377;)</label>
+          <input type="number" id="productPrice" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="productStock">Stock Quantity</label>
+          <input type="number" id="productStock" required>
+        </div>
+        <div class="form-group">
+          <label for="productImage">Product Image</label>
+          <div class="image-upload-container">
+            <input type="file" id="productImageFile" accept="image/*" onchange="previewImage(event)">
+            <div class="image-preview" id="imagePreview">
+              <div class="preview-placeholder">Click to upload image</div>
+            </div>
+            <input type="url" id="productImage" placeholder="Or enter image URL" style="margin-top: 10px;">
+          </div>
+        </div>
+        <div class="modal-button-group">
+          <button type="button" class="btn btn-secondary" onclick="closeAddProductModal()">Cancel</button>
+          <button type="submit" class="btn">Add Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Product Modal -->
+  <div id="editProductModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Edit Product</div>
+      <form id="editProductForm" onsubmit="updateProduct(event)">
+        <input type="hidden" id="editProductId">
+        <div class="form-group">
+          <label for="editProductName">Product Name</label>
+          <input type="text" id="editProductName" required>
+        </div>
+        <div class="form-group">
+          <label for="editProductCategory">Category</label>
+          <input type="text" id="editProductCategory" required>
+        </div>
+        <div class="form-group">
+          <label for="editProductPrice">Price per Day (&#8377;)</label>
+          <input type="number" id="editProductPrice" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="editProductStock">Stock Quantity</label>
+          <input type="number" id="editProductStock" required>
+        </div>
+        <div class="form-group">
+          <label for="editProductImage">Product Image URL</label>
+          <input type="url" id="editProductImage" placeholder="Enter image URL">
+        </div>
+        <div class="modal-button-group">
+          <button type="button" class="btn btn-secondary" onclick="closeEditProductModal()">Cancel</button>
+          <button type="submit" class="btn">Update Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Legacy Add Rental Modal removed (use Rentals tab creator) -->
+
+  <!-- View Bill Modal -->
+  <div id="viewBillModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Bill Details</div>
+      <div id="billDetails">
+        <!-- Bill content will be populated here -->
+      </div>
+      <div class="modal-button-group">
+        <button type="button" class="btn btn-secondary" onclick="closeViewBillModal()">Close</button>
+        <button type="button" class="btn" onclick="printBill()">Print Bill</button>
+      </div>
+    </div>
+  </div>
+  <div id="returnModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Process Return</div>
+      <input type="hidden" id="returnRentalId">
+      <div class="form-group">
+        <p>Return details:</p>
+        <p><strong id="returnConfirmText"></strong></p>
+      </div>
+      <div class="form-group">
+        <label for="returnQtyInput">Quantity to Return:</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="number" id="returnQtyInput" min="1" style="width: 80px; padding: 8px; border: 1px solid var(--muted); border-radius: 4px;">
+          <span id="maxReturnQty" style="color: var(--muted);">/ <span id="maxReturnQtyValue">0</span> items</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="returnDateInput">Return Date:</label>
+        <input type="date" id="returnDateInput" style="width: 100%; padding: 8px; border: 1px solid var(--muted); border-radius: 4px; background: var(--surface); color: var(--text);">
+      </div>
+      <div class="form-group" style="display:flex;gap:10px;align-items:center;">
+        <input type="checkbox" id="generateBillNow" style="width: 16px; height: 16px;">
+        <label for="generateBillNow" style="margin:0;">Generate bill now (works for partial returns too)</label>
+      </div>
+      <div class="modal-button-group">
+        <button type="button" class="btn btn-secondary" onclick="closeReturnModal()">Cancel</button>
+        <button type="button" class="btn" onclick="confirmReturn()">Process Return</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin/core.js"></script>
+  <script src="admin/dashboard.js"></script>
+  <script src="admin/users.js"></script>
+  <script src="admin/products.js"></script>
+  <script src="admin/rentals.js"></script>
+  <script src="admin/returns.js"></script>
+  <script src="admin/bills.js"></script>
+</body>
+</html>
