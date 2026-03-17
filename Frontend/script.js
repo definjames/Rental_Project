@@ -6,14 +6,14 @@ let searchQuery = '';
 
 async function apiFetch(path, options = {}){
   // point to local backend
-  const base = '';
+  const base = 'https://rental-project-6tni.onrender.com';
 
   if(!options.headers) options.headers = {};
   if(options.body && !(options.body instanceof FormData)){
     options.headers['Content-Type'] = 'application/json';
     options.body = JSON.stringify(options.body);
   }
-  const res = await fetch(base + '/api' + path, { ...options, credentials: 'same-origin' });
+  const res = await fetch(base + '/api' + path, { ...options, credentials: 'include' });
   const data = await res.json().catch(()=>({}));
   if(!res.ok) throw data;
   return data;
