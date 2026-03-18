@@ -5,7 +5,13 @@ const connectDB = require('./config/db');
 const User = require('./models/User');
 
 const app = express();
-app.use(cors());
+
+// Allow cross-origin requests and support cookies (important when frontend is hosted on a different domain)
+app.use(cors({
+  origin: true, // allow any origin (needed for auth cookies across domains)
+  credentials: true,
+}));
+
 app.use(express.json({ limit: '10mb' }));
 
 // connect to mongodb

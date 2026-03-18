@@ -5,9 +5,11 @@ const User = require('../models/User');
 
 function setAuthCookie(res, token) {
   const eightHoursMs = 8 * 60 * 60 * 1000;
+  const secure = process.env.NODE_ENV === 'production';
   res.cookie('token', token, {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: secure ? 'none' : 'lax',
+    secure,
     maxAge: eightHoursMs
   });
 }
@@ -64,7 +66,8 @@ router.get('/me', require('../middleware/auth'), async (req, res) => {
 
 // POST /api/auth/logout
 router.post('/logout', async (req, res) => {
-  res.clearCookie('token', { sameSite: 'lax' });
+  const secure = process.env.NODE_ENV === 'production';
+  res.clearCookie('token', { sameSite: secure ? 'none' : 'lax', secure });
   res.json({ message: 'logged out' });
 });
 
