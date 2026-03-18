@@ -9,7 +9,7 @@ async function apiFetch(path, options = {}) {
     options.body = JSON.stringify(options.body);
   }
 
-  const res = await fetch(base + path, { ...options, credentials: 'same-origin' });
+  const res = await fetch(base + '/api' + path, { ...options, credentials: 'include' });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw data;
   return data;
